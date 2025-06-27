@@ -33,6 +33,18 @@ public class BeerController {
     }
 
 
+    // Check every property before setting it
+    // PATCH THE BEER :)
+    @PatchMapping("{beerId}")
+    public ResponseEntity patchBeerById(@PathVariable("beerId") UUID id, @RequestBody Beer beer) {
+
+        beerService.patchBeerById(id, beer);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+
 
     // DELETE THE BEER
     @DeleteMapping("{beerId}")
