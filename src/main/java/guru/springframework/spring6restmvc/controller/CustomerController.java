@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +38,30 @@ public class CustomerController {
         return new ResponseEntity(headers, HttpStatus.CREATED);
 
     }
+
+    // UPDATE THE CUSTOMER
+    @PutMapping("{customerId}")
+    public ResponseEntity updateCustomerById(@PathVariable("customerId") UUID customerId, @RequestBody Customer customer) {
+
+
+        // Calling service impl for internal functionality
+        customerService.updateCustomerById(customerId, customer);
+
+
+        return  new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+
+    // DELETE THE CUSTOMER
+    @DeleteMapping("{customerId}")
+    public ResponseEntity deleteCustomerById(@PathVariable("customerId") UUID id) {
+
+
+        customerService.deleteCustomerById(id);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
 
 
     // LIST ALL THE CUSTOMERS

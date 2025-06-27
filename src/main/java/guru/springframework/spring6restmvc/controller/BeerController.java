@@ -23,6 +23,27 @@ public class BeerController {
     private final BeerService beerService;
 
 
+    // UPDATE THE BEER
+    @PutMapping("{beerId}")
+    public ResponseEntity updateById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer) {
+
+        beerService.updateBeerById(beerId, beer);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+
+
+    // DELETE THE BEER
+    @DeleteMapping("{beerId}")
+    public ResponseEntity deleteBeerById(@PathVariable("beerId") UUID id) {
+
+        beerService.deleteBeerById(id);
+
+        return  new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+
     // CREATE A NEW BEER
     // Location header returned --
     @PostMapping

@@ -81,4 +81,24 @@ public class CustomerServiceImpl implements CustomerService {
         // 3- Return the saved object
         return savedCustomer;
     }
+
+    @Override
+    public void updateCustomerById(UUID customerId, Customer customer) {
+
+        Customer existing = customerMap.get(customerId);
+
+        // OR you can use PATCH request to partially update w/o having to specify everything
+        if (customer.getCustomerName() != null) existing.setCustomerName(customer.getCustomerName());
+        if (customer.getLastModifiedDate() != null) existing.setLastModifiedDate(customer.getLastModifiedDate());
+        if (customer.getCreatedDate() != null) existing.setCreatedDate(customer.getLastModifiedDate());
+
+
+
+    }
+
+    @Override
+    public void deleteCustomerById(UUID id) {
+
+        customerMap.remove(id);
+    }
 }
