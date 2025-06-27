@@ -62,4 +62,23 @@ public class CustomerServiceImpl implements CustomerService {
         log.debug("Getting the customer by id! -in the service");
         return customerMap.get(id);
     }
+
+    @Override
+    public Customer saveNewCustomer(Customer customer) {
+
+        // 1- Create the object in JPA
+        Customer savedCustomer = Customer.builder()
+                .id(UUID.randomUUID())
+                .version(1)
+                .customerName(customer.getCustomerName())
+                .createdDate(LocalDateTime.now())
+                .lastModifiedDate(LocalDateTime.now())
+                .build();
+
+        // 2- Add to HasMap
+        customerMap.put(savedCustomer.getId(), savedCustomer);
+
+        // 3- Return the saved object
+        return savedCustomer;
+    }
 }
