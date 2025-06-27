@@ -31,7 +31,7 @@ public class BeerController {
         // Create the entity with Service implementations
         Beer savedBeer = beerService.saveNewBeer(beer);
 
-        // Location header
+        // Location header --> Constructing a URI
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());
 
