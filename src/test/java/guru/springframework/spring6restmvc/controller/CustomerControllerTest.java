@@ -15,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,7 +47,10 @@ class CustomerControllerTest {
     }
 
     @Captor
-    ArgumentCaptor<UUID> argumentCaptor;
+    ArgumentCaptor<UUID> uuidArgumentCaptor;
+
+    @Captor
+    ArgumentCaptor<Customer> customerArgumentCaptor;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -85,6 +90,25 @@ class CustomerControllerTest {
     }
 
 
+    // Test patch customer
+    @Test
+    void testPatchCustomer() throws Exception {
+        Customer customer = customerServiceImpl.listCustomer().get(1);
+
+        Map<String, Object> customerMap = new HashMap<>();
+        customerMap.put("customerName", "New Name");
+
+        mockMvc.perform(patch("/api/v1/customers/" + customer.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(customerMap)))
+                .andExpect(status().isNoContent());
+
+        verify(customerService).patchCustomerById(uuidArgumentCaptor.capture(), customerArgumentCaptor.capture());
+
+        assertThat(customer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
+        assertThat(customerMap.get("customerName")).isEqualTo(customerArgumentCaptor.getValue().getCustomerName());
+    }
 
     // test delete Customer
     @Test
@@ -96,9 +120,9 @@ class CustomerControllerTest {
                 .andExpect(status().isNoContent());
 
 
-        verify(customerService).deleteCustomerById(argumentCaptor.capture());
+        verify(customerService).deleteCustomerById(uuidArgumentCaptor.capture());
 
-        assertThat(customer.getId()).isEqualTo(argumentCaptor.getValue());
+        assertThat(customer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
     }
 
     // Test listCustomer
