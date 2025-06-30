@@ -8,12 +8,15 @@ import guru.springframework.spring6restmvc.services.BeerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,6 +55,14 @@ class BeerControllerTest {
     // No need to look for Modules, this way
     @Autowired
     ObjectMapper objectMapper;
+
+
+    // Reusable captors
+    @Captor
+    ArgumentCaptor<UUID> uuidArgumentCaptor;
+
+    @Captor
+    ArgumentCaptor<Beer> beerArgumentCaptor;
 
 
     // Create beer test
@@ -100,13 +111,38 @@ class BeerControllerTest {
 
 
         // to capture arguments passed to a mock method
-        ArgumentCaptor<UUID> uuidArgumentCaptor = ArgumentCaptor.forClass(UUID.class);
 
         // Verify delete operation
         verify(beerService).deleteBeerById(uuidArgumentCaptor.capture());
 
         // To verify that id property is parsed properly compare two values
         assertThat(beer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
+    }
+
+    // Test patch Beer
+    @Test
+    void testPatchBeer() throws Exception {
+        Beer beer = beerServiceImpl.listBeers().get(1);
+
+        // Mimicking JSON request body, having partial data
+        Map<String, Object> beerMap = new HashMap<>();
+        beerMap.put("beerName", "New Name");
+
+        mockMvc.perform(patch("/api/v1/beer/" + beer.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(beerMap)))
+                .andExpect(status().isNoContent());
+
+        // Verify against the serviceImpl arguments
+        verify(beerService).patchBeerById(uuidArgumentCaptor.capture(), beerArgumentCaptor.capture());
+
+        // Compare beerId
+        assertThat(beer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
+        // Compare if changed new beer name is equal to the one in the map, which is the desired beer name
+        // Used getValue because captor is capturing an object with multiple properties
+        assertThat(beerMap.get("beerName")).isEqualTo(beerArgumentCaptor.getValue().getBeerName());
+
     }
 
     @Test

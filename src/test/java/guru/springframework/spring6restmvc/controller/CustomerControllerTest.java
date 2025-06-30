@@ -8,6 +8,7 @@ import guru.springframework.spring6restmvc.services.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -43,6 +44,8 @@ class CustomerControllerTest {
         customerServiceImpl = new CustomerServiceImpl();
     }
 
+    @Captor
+    ArgumentCaptor<UUID> argumentCaptor;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -82,6 +85,7 @@ class CustomerControllerTest {
     }
 
 
+
     // test delete Customer
     @Test
     void testDeleteCustomer() throws Exception {
@@ -91,8 +95,6 @@ class CustomerControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
-        // Create argument captor
-        ArgumentCaptor<UUID> argumentCaptor = ArgumentCaptor.forClass(UUID.class);
 
         verify(customerService).deleteCustomerById(argumentCaptor.capture());
 

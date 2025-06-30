@@ -43,7 +43,7 @@ public class BeerController {
 
         beerService.patchBeerById(id, beer);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 
