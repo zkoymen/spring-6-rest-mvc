@@ -86,6 +86,19 @@ public class BeerController {
         return beerService.listBeers();
     }
 
+
+
+    // provide custom exception class
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity handleNotFoundException() {
+        System.out.println("Inside the exception handler!");
+        // instead of using "new"
+        return ResponseEntity.notFound().build();
+    }
+
+
+
+
     // GET BEER BY ID
     // No need to specify full path
     @GetMapping(BEER_PATH_ID)
