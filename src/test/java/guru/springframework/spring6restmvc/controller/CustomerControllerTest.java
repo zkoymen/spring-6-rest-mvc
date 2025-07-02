@@ -98,6 +98,8 @@ class CustomerControllerTest {
         Map<String, Object> customerMap = new HashMap<>();
         customerMap.put("customerName", "New Name");
 
+        // refactoring needed -too many repetitions
+        // define paths as constants
         mockMvc.perform(patch("/api/v1/customers/" + customer.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)

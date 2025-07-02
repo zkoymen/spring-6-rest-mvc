@@ -20,14 +20,18 @@ import java.util.UUID;
 // @AllArgsConstructor
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/beer")
+@RequestMapping
 public class BeerController {
+
+    public static final String BEER_PATH = "/api/v1/beer";
+    public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
+
     // Initializing the service ??
     private final BeerService beerService;
 
 
     // UPDATE THE BEER
-    @PutMapping("{beerId}")
+    @PutMapping(BEER_PATH_ID)
     public ResponseEntity updateById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer) {
 
         beerService.updateBeerById(beerId, beer);
@@ -38,7 +42,7 @@ public class BeerController {
 
     // Check every property before setting it
     // PATCH THE BEER :)
-    @PatchMapping("{beerId}")
+    @PatchMapping(BEER_PATH_ID)
     public ResponseEntity patchBeerById(@PathVariable("beerId") UUID id, @RequestBody Beer beer) {
 
         beerService.patchBeerById(id, beer);
@@ -50,7 +54,7 @@ public class BeerController {
 
 
     // DELETE THE BEER
-    @DeleteMapping("{beerId}")
+    @DeleteMapping(BEER_PATH_ID)
     public ResponseEntity deleteBeerById(@PathVariable("beerId") UUID id) {
 
         beerService.deleteBeerById(id);
@@ -77,14 +81,14 @@ public class BeerController {
 
 
     // LIST ALL THE BEERS
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping(BEER_PATH)
     public List<Beer> listBeers() {
         return beerService.listBeers();
     }
 
     // GET BEER BY ID
     // No need to specify full path
-    @RequestMapping(value = "{beerId}", method = RequestMethod.GET)
+    @GetMapping(BEER_PATH_ID)
     public Beer getBeerById(@PathVariable("beerId") UUID beerId) {
 
         log.debug("Get Beer by Id -in controller -Testing the devtools 12345");
