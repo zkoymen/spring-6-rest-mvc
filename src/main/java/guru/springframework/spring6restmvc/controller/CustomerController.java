@@ -86,6 +86,11 @@ public class CustomerController {
         return customerService.listCustomer();
     }
 
+    // Exception handler for Not found error
+    // DELETED
+
+
+
     // GET CUSTOMER BY ID
     @GetMapping(CUSTOMER_PATH_ID)
     public Customer getCustomerById(@PathVariable("customerId") UUID customerId) {

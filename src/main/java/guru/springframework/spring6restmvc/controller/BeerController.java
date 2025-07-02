@@ -89,12 +89,7 @@ public class BeerController {
 
 
     // provide custom exception class
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity handleNotFoundException() {
-        System.out.println("Inside the exception handler!");
-        // instead of using "new"
-        return ResponseEntity.notFound().build();
-    }
+    // *** DELETED IT
 
 
 
