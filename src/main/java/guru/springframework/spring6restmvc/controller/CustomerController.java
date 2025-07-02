@@ -97,7 +97,7 @@ public class CustomerController {
 
         log.debug("Getting the customer by id -in the service !!");
 
-        return customerService.getCustomerById(customerId);
+        return customerService.getCustomerById(customerId).orElseThrow(NotFoundException::new);
     }
 
 }
