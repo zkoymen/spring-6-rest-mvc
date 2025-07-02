@@ -65,7 +65,7 @@ public class BeerController {
 
     // CREATE A NEW BEER
     // Location header returned --
-    @PostMapping
+    @PostMapping(BEER_PATH)
     public ResponseEntity handlePost(@RequestBody Beer beer) {
 
         // Create the entity with Service implementations

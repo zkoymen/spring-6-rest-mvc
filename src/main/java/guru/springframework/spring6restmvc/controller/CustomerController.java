@@ -32,7 +32,7 @@ public class CustomerController {
 
 
     // CREATE THE CUSTOMER
-    @PostMapping
+    @PostMapping(CUSTOMER_PATH)
     public ResponseEntity handlePost(@RequestBody Customer customer) {
 
         Customer savedCustomer = customerService.saveNewCustomer(customer);

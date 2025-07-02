@@ -72,8 +72,8 @@ class CustomerControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(customer)))
-                .andExpect(status().isCreated())
-                .andExpect(header().exists("Location"));
+                        .andExpect(status().isCreated())
+                        .andExpect(header().exists("Location"));
     }
 
     // Update customer test w. jackson
