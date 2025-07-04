@@ -1,6 +1,6 @@
 package guru.springframework.spring6restmvc.services;
 
-import guru.springframework.spring6restmvc.model.Customer;
+import guru.springframework.spring6restmvc.model.CustomerDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -12,7 +12,7 @@ import java.util.*;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private Map<UUID, Customer> customerMap;
+    private Map<UUID, CustomerDTO> customerMap;
 
     // Examples initialized
     public CustomerServiceImpl() {
@@ -20,7 +20,7 @@ public class CustomerServiceImpl implements CustomerService {
         // Map first
         this.customerMap = new HashMap<>();
 
-        Customer cst1 = Customer.builder()
+        CustomerDTO cst1 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .customerName("Jones Elenor")
                 .version(1)
@@ -28,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
 
-        Customer cst2 = Customer.builder()
+        CustomerDTO cst2 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .customerName("Mordechai Rigby")
                 .version(1)
@@ -36,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
 
-        Customer cst3 = Customer.builder()
+        CustomerDTO cst3 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .customerName("Steve Jobs")
                 .version(1)
@@ -52,23 +52,23 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> listCustomer() {
+    public List<CustomerDTO> listCustomer() {
         // return created ones
         return new ArrayList<>(customerMap.values());
     }
 
     @Override
-    public Optional<Customer> getCustomerById(UUID id) {
+    public Optional<CustomerDTO> getCustomerById(UUID id) {
 
         log.debug("Getting the customer by id! -in the service");
         return Optional.of(customerMap.get(id));
     }
 
     @Override
-    public Customer saveNewCustomer(Customer customer) {
+    public CustomerDTO saveNewCustomer(CustomerDTO customer) {
 
         // 1- Create the object in JPA
-        Customer savedCustomer = Customer.builder()
+        CustomerDTO savedCustomer = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .version(1)
                 .customerName(customer.getCustomerName())
@@ -84,9 +84,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomerById(UUID customerId, Customer customer) {
+    public void updateCustomerById(UUID customerId, CustomerDTO customer) {
 
-        Customer existing = customerMap.get(customerId);
+        CustomerDTO existing = customerMap.get(customerId);
 
         // OR you can use PATCH request to partially update w/o having to specify everything
         if (customer.getCustomerName() != null) existing.setCustomerName(customer.getCustomerName());
@@ -104,10 +104,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void patchCustomerById(UUID id, Customer customer) {
+    public void patchCustomerById(UUID id, CustomerDTO customer) {
 
 
-        Customer existing = customerMap.get(id);
+        CustomerDTO existing = customerMap.get(id);
 
         if (StringUtils.hasText(customer.getCustomerName())) existing.setCustomerName(customer.getCustomerName());
         if (customer.getLastModifiedDate() != null) existing.setLastModifiedDate(customer.getLastModifiedDate());

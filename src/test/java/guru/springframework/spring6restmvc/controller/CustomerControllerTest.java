@@ -1,8 +1,7 @@
 package guru.springframework.spring6restmvc.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import guru.springframework.spring6restmvc.model.Customer;
+import guru.springframework.spring6restmvc.model.CustomerDTO;
 import guru.springframework.spring6restmvc.services.CustomerService;
 import guru.springframework.spring6restmvc.services.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +22,6 @@ import java.util.UUID;
 import static guru.springframework.spring6restmvc.controller.CustomerController.CUSTOMER_PATH;
 import static guru.springframework.spring6restmvc.controller.CustomerController.CUSTOMER_PATH_ID;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -54,7 +52,7 @@ class CustomerControllerTest {
     ArgumentCaptor<UUID> uuidArgumentCaptor;
 
     @Captor
-    ArgumentCaptor<Customer> customerArgumentCaptor;
+    ArgumentCaptor<CustomerDTO> customerArgumentCaptor;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -64,11 +62,11 @@ class CustomerControllerTest {
     @Test
     void testCreateNewCustomer() throws Exception {
 
-        Customer customer = customerServiceImpl.listCustomer().get(0);
+        CustomerDTO customer = customerServiceImpl.listCustomer().get(0);
         customer.setVersion(null);
         customer.setId(null);
 
-        given(customerService.saveNewCustomer(any(Customer.class)))
+        given(customerService.saveNewCustomer(any(CustomerDTO.class)))
                 .willReturn(customerServiceImpl.listCustomer().get(1));
 
         mockMvc.perform(post(CUSTOMER_PATH)
@@ -82,7 +80,7 @@ class CustomerControllerTest {
     // Update customer test w. jackson
     @Test
     void testUpdateCustomer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomer().get(1);
+        CustomerDTO customer = customerServiceImpl.listCustomer().get(1);
 
 
         // No manual binding, using initURI implicit method to positionally bind them
@@ -92,14 +90,14 @@ class CustomerControllerTest {
                 .content(objectMapper.writeValueAsString(customer)))
                 .andExpect(status().isNoContent());
 
-        verify(customerService).updateCustomerById(any(UUID.class), any(Customer.class));
+        verify(customerService).updateCustomerById(any(UUID.class), any(CustomerDTO.class));
     }
 
 
     // Test patch customer
     @Test
     void testPatchCustomer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomer().get(1);
+        CustomerDTO customer = customerServiceImpl.listCustomer().get(1);
 
         Map<String, Object> customerMap = new HashMap<>();
         customerMap.put("customerName", "New Name");
@@ -121,7 +119,7 @@ class CustomerControllerTest {
     // test delete Customer
     @Test
     void testDeleteCustomer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomer().get(1);
+        CustomerDTO customer = customerServiceImpl.listCustomer().get(1);
 
         mockMvc.perform(delete(CUSTOMER_PATH_ID, customer.getId())
                 .accept(MediaType.APPLICATION_JSON))
@@ -161,7 +159,7 @@ class CustomerControllerTest {
     @Test
     void getCustomerById() throws Exception {
 
-        Customer testCustomer = customerServiceImpl.listCustomer().get(0);
+        CustomerDTO testCustomer = customerServiceImpl.listCustomer().get(0);
 
         given(customerService.getCustomerById(testCustomer.getId())).willReturn(Optional.of(testCustomer));
 

@@ -1,15 +1,13 @@
 package guru.springframework.spring6restmvc.controller;
 
 
-import guru.springframework.spring6restmvc.model.Beer;
+import guru.springframework.spring6restmvc.model.BeerDTO;
 import guru.springframework.spring6restmvc.services.BeerService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +30,7 @@ public class BeerController {
 
     // UPDATE THE BEER
     @PutMapping(BEER_PATH_ID)
-    public ResponseEntity updateById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer) {
+    public ResponseEntity updateById(@PathVariable("beerId") UUID beerId, @RequestBody BeerDTO beer) {
 
         beerService.updateBeerById(beerId, beer);
 
@@ -43,7 +41,7 @@ public class BeerController {
     // Check every property before setting it
     // PATCH THE BEER :)
     @PatchMapping(BEER_PATH_ID)
-    public ResponseEntity patchBeerById(@PathVariable("beerId") UUID id, @RequestBody Beer beer) {
+    public ResponseEntity patchBeerById(@PathVariable("beerId") UUID id, @RequestBody BeerDTO beer) {
 
         beerService.patchBeerById(id, beer);
 
@@ -66,10 +64,10 @@ public class BeerController {
     // CREATE A NEW BEER
     // Location header returned --
     @PostMapping(BEER_PATH)
-    public ResponseEntity handlePost(@RequestBody Beer beer) {
+    public ResponseEntity handlePost(@RequestBody BeerDTO beer) {
 
         // Create the entity with Service implementations
-        Beer savedBeer = beerService.saveNewBeer(beer);
+        BeerDTO savedBeer = beerService.saveNewBeer(beer);
 
         // Location header --> Constructing a URI
         HttpHeaders headers = new HttpHeaders();
@@ -82,7 +80,7 @@ public class BeerController {
 
     // LIST ALL THE BEERS
     @GetMapping(BEER_PATH)
-    public List<Beer> listBeers() {
+    public List<BeerDTO> listBeers() {
         return beerService.listBeers();
     }
 
@@ -97,7 +95,7 @@ public class BeerController {
     // GET BEER BY ID
     // No need to specify full path
     @GetMapping(BEER_PATH_ID)
-    public Beer getBeerById(@PathVariable("beerId") UUID beerId) {
+    public BeerDTO getBeerById(@PathVariable("beerId") UUID beerId) {
 
         log.debug("Get Beer by Id -in controller -Testing the devtools 12345");
 
