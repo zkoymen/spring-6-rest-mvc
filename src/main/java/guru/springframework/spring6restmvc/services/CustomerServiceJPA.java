@@ -1,0 +1,46 @@
+package guru.springframework.spring6restmvc.services;
+
+import guru.springframework.spring6restmvc.model.CustomerDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+
+@RequiredArgsConstructor
+@Service
+@Primary
+public class CustomerServiceJPA implements CustomerService {
+    @Override
+    public List<CustomerDTO> listCustomer() {
+        return List.of();
+    }
+
+    @Override
+    public Optional<CustomerDTO> getCustomerById(UUID id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public CustomerDTO saveNewCustomer(CustomerDTO costumer) {
+        return null;
+    }
+
+    @Override
+    public void updateCustomerById(UUID customerId, CustomerDTO customer) {
+
+    }
+
+    @Override
+    public void deleteCustomerById(UUID id) {
+
+    }
+
+    @Override
+    public void patchCustomerById(UUID id, CustomerDTO customer) {
+
+    }
+}
