@@ -5,22 +5,23 @@ import guru.springframework.spring6restmvc.model.BeerStyle;
 import guru.springframework.spring6restmvc.entities.Customer;
 import guru.springframework.spring6restmvc.repositories.BeerRepository;
 import guru.springframework.spring6restmvc.repositories.CustomerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.UUID;
 
+
+@Component
+@RequiredArgsConstructor
 public class BootstrapData implements CommandLineRunner {
 
     private final CustomerRepository customerRepository;
     private final BeerRepository beerRepository;
 
-    public BootstrapData(BeerRepository beerRepository ,CustomerRepository customerRepository) {
-        this.beerRepository = beerRepository;
-        this.customerRepository = customerRepository;
-
-    }
     @Override
     public void run(String... args) throws Exception {
 
@@ -54,9 +55,7 @@ public class BootstrapData implements CommandLineRunner {
 
 
             // Save them all
-            customerRepository.save(cst1);
-            customerRepository.save(cst2);
-            customerRepository.save(cst3);
+            customerRepository.saveAll(Arrays.asList(cst1, cst2, cst3));
         }
     }
 
