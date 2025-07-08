@@ -82,6 +82,10 @@ class CustomerControllerTest {
     void testUpdateCustomer() throws Exception {
         CustomerDTO customer = customerServiceImpl.listCustomer().get(1);
 
+        // Now returns optional
+        given(customerService.updateCustomerById(any(), any())).willReturn(Optional.of(CustomerDTO
+                .builder().build()));
+
 
         // No manual binding, using initURI implicit method to positionally bind them
         mockMvc.perform(put(CUSTOMER_PATH_ID, customer.getId())
@@ -102,6 +106,8 @@ class CustomerControllerTest {
         Map<String, Object> customerMap = new HashMap<>();
         customerMap.put("customerName", "New Name");
 
+        given(customerService.patchCustomerById(any(), any())).willReturn(Optional.of(CustomerDTO.builder().build()));
+
         // refactoring needed -too many repetitions
         // define paths as constants
         mockMvc.perform(patch(CUSTOMER_PATH_ID, customer.getId())
@@ -120,6 +126,9 @@ class CustomerControllerTest {
     @Test
     void testDeleteCustomer() throws Exception {
         CustomerDTO customer = customerServiceImpl.listCustomer().get(1);
+
+        // optional
+        given(customerService.deleteCustomerById(any())).willReturn(true);
 
         mockMvc.perform(delete(CUSTOMER_PATH_ID, customer.getId())
                 .accept(MediaType.APPLICATION_JSON))

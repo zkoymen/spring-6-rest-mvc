@@ -21,7 +21,8 @@ import java.util.UUID;
 public class CustomerController {
 
     // Defining paths as constants
-    public static final String CUSTOMER_PATH = "/api/v1/customers";
+    // Add "/" after --> or you will get errors şn header get location part
+    public static final String CUSTOMER_PATH = "/api/v1/customers/";
     public static final String CUSTOMER_PATH_ID = "/api/v1/customers" + "/{customerId}" ;
 
 
@@ -47,7 +48,9 @@ public class CustomerController {
     @PatchMapping(CUSTOMER_PATH_ID)
     public ResponseEntity patchCustomerById(@PathVariable("customerId") UUID id, @RequestBody CustomerDTO customer) {
 
-        customerService.patchCustomerById(id, customer);
+        if(customerService.patchCustomerById(id, customer).isEmpty()) {
+            throw new NotFoundException();
+        }
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -56,11 +59,13 @@ public class CustomerController {
 
     // UPDATE THE CUSTOMER
     @PutMapping(CUSTOMER_PATH_ID)
-    public ResponseEntity updateCustomerById(@PathVariable("customerId") UUID customerId, @RequestBody CustomerDTO customer) {
-
+    public ResponseEntity updateCustomerById(@PathVariable("customerId") UUID customerId,
+                                             @RequestBody CustomerDTO customer) {
 
         // Calling service impl for internal functionality
-        customerService.updateCustomerById(customerId, customer);
+        if (customerService.updateCustomerById(customerId, customer).isEmpty()) {
+            throw new NotFoundException();
+        }
 
 
         return  new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -72,7 +77,9 @@ public class CustomerController {
     public ResponseEntity deleteCustomerById(@PathVariable("customerId") UUID id) {
 
 
-        customerService.deleteCustomerById(id);
+        if (!customerService.deleteCustomerById(id)) {
+            throw new NotFoundException();
+        }
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

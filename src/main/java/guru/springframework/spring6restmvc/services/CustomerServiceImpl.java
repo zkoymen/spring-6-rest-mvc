@@ -84,27 +84,28 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomerById(UUID customerId, CustomerDTO customer) {
+    public Optional<CustomerDTO> updateCustomerById(UUID customerId, CustomerDTO customer) {
 
         CustomerDTO existing = customerMap.get(customerId);
 
         // OR you can use PATCH request to partially update w/o having to specify everything
         if (customer.getCustomerName() != null) existing.setCustomerName(customer.getCustomerName());
-        if (customer.getLastModifiedDate() != null) existing.setLastModifiedDate(customer.getLastModifiedDate());
-        if (customer.getCreatedDate() != null) existing.setCreatedDate(customer.getLastModifiedDate());
 
+        // Do not put it in the map instead return optional object
+        return Optional.of(existing);
 
 
     }
 
     @Override
-    public void deleteCustomerById(UUID id) {
+    public Boolean deleteCustomerById(UUID id) {
 
         customerMap.remove(id);
+        return true;
     }
 
     @Override
-    public void patchCustomerById(UUID id, CustomerDTO customer) {
+    public Optional<CustomerDTO> patchCustomerById(UUID id, CustomerDTO customer) {
 
 
         CustomerDTO existing = customerMap.get(id);
@@ -113,6 +114,10 @@ public class CustomerServiceImpl implements CustomerService {
         if (customer.getLastModifiedDate() != null) existing.setLastModifiedDate(customer.getLastModifiedDate());
         if (customer.getCreatedDate() != null) existing.setCreatedDate(customer.getLastModifiedDate());
         if (customer.getLastModifiedDate() != null) existing.setLastModifiedDate(customer.getLastModifiedDate());
+
+        return Optional.of(existing);
     }
+
+
 
 }
