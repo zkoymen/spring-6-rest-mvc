@@ -31,6 +31,11 @@ public class BeerControllerIT {
     @Autowired
     BeerRepository beerRepository;
 
+
+    // Altering the db --> inserting new object to db
+    // Don't want to interrupt any other tests
+    @Rollback
+    @Transactional
     @Test
     void saveNewBeerTest() {
 
@@ -38,13 +43,22 @@ public class BeerControllerIT {
                 .beerName("New Beer")
                 .build();
 
+        // passing the beerDTO to create a new beer.
         ResponseEntity responseEntity = beerController.handlePost(beerDTO);
 
+
+        // checks that the HTTP status returned is 201 (Created), which indicates that the beer was successfully created
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.valueOf(201));
         assertThat(responseEntity.getHeaders().getLocation()).isNotNull();
 
+        // extracts the UUID of the newly created beer from the location URI:
         String[] locationUUID = responseEntity.getHeaders().getLocation().getPath().split("/");
+
+        // Extracts and converts the UUID from the location URI, which is expected to be at the 4th index of the split path array.
         UUID savedUUID = UUID.fromString(locationUUID[4]);
+
+        Beer beer = beerRepository.findById(savedUUID).get();
+        assertThat(beer).isNotNull();
 
     }
 
