@@ -90,6 +90,8 @@ class BeerControllerTest {
     @Test
     void testUpdateBeer() throws Exception {
         BeerDTO beer = beerServiceImpl.listBeers().get(0);
+        // Since we made it optional need to return an object nevertheless
+        given(beerService.updateBeerById(any(), any())).willReturn(Optional.of(beer));
 
         mockMvc.perform(put(BEER_PATH_ID , beer.getId())
                 .accept(MediaType.APPLICATION_JSON)

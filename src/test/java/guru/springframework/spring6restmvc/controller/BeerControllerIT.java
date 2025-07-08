@@ -1,6 +1,7 @@
 package guru.springframework.spring6restmvc.controller;
 
 import guru.springframework.spring6restmvc.entities.Beer;
+import guru.springframework.spring6restmvc.mappers.BeerMapper;
 import guru.springframework.spring6restmvc.model.BeerDTO;
 import guru.springframework.spring6restmvc.repositories.BeerRepository;
 import jakarta.transaction.Transactional;
@@ -31,6 +32,37 @@ public class BeerControllerIT {
     @Autowired
     BeerRepository beerRepository;
 
+    @Autowired
+    BeerMapper beerMapper;
+
+
+    @Test
+    void testUpdateNotFound() {
+        assertThrows(NotFoundException.class, () -> {
+            beerController.updateById(UUID.randomUUID(), BeerDTO.builder().build());
+        });
+    }
+
+    @Test
+    void testUpdateBeer() {
+        Beer beer = beerRepository.findAll().get(0);
+
+        BeerDTO dto = beerMapper.beerToBeerDto(beer);
+        // Just changing manually
+
+        dto.setId(null);
+        dto.setVersion(null);
+        final String beerName = "efes";
+        dto.setBeerName(beerName);
+
+
+        ResponseEntity responseEntity = beerController.updateById(beer.getId(), dto);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        Beer updatedBeer = beerRepository.findById(beer.getId()).get();
+        assertThat(updatedBeer.getBeerName()).isEqualTo(beerName);
+
+    }
 
     // Altering the db --> inserting new object to db
     // Don't want to interrupt any other tests
