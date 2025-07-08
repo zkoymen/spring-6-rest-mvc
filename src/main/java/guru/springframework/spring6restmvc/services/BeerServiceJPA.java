@@ -6,6 +6,7 @@ import guru.springframework.spring6restmvc.repositories.BeerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,6 +64,42 @@ public class BeerServiceJPA implements BeerService {
         return atomicReference.get();
     }
 
+
+
+    @Override
+    public Optional<BeerDTO> patchBeerById(UUID id, BeerDTO beer) {
+
+        AtomicReference<Optional<BeerDTO>> atomicReference = new AtomicReference<>();
+
+        beerRepository.findById(id).ifPresentOrElse(foundBeer -> {
+            if (StringUtils.hasText(beer.getBeerName())) {
+                foundBeer.setBeerName(beer.getBeerName());
+            }
+            if (beer.getBeerStyle() != null) {
+                foundBeer.setBeerStyle(beer.getBeerStyle());
+            }
+
+            if(beer.getQuantityOnHand()!= null) {
+                foundBeer.setQuantityOnHand(beer.getQuantityOnHand());
+            }
+
+            if (beer.getPrice() != null) {
+                foundBeer.setPrice(beer.getPrice());
+            }
+
+            atomicReference.set(Optional.of(beerMapper
+                    .beerToBeerDto(beerRepository.save(foundBeer))));
+        }, () -> {
+
+            atomicReference.set(Optional.empty());
+                }
+        );
+
+        return atomicReference.get();
+    }
+
+
+
     @Override
     public boolean deleteBeerById(UUID id) {
         if(beerRepository.existsById(id)){
@@ -75,8 +112,5 @@ public class BeerServiceJPA implements BeerService {
 
     }
 
-    @Override
-    public void patchBeerById(UUID id, BeerDTO beer) {
 
-    }
 }

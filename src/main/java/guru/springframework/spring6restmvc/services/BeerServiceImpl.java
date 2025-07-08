@@ -129,7 +129,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void patchBeerById(UUID id, BeerDTO beer) {
+    public Optional<BeerDTO> patchBeerById(UUID id, BeerDTO beer) {
 
 
         BeerDTO existing = beerMap.get(id);
@@ -140,8 +140,8 @@ public class BeerServiceImpl implements BeerService {
         if (StringUtils.hasText(beer.getUpc())) existing.setUpc(beer.getUpc());
         if (beer.getQuantityOnHand()!= null) existing.setQuantityOnHand(beer.getQuantityOnHand());
 
-        beerMap.put(existing.getId(), existing);
-
+        // change here because now t returns an Optional beerDTO object
+        return Optional.of(existing);
 
 
     }

@@ -36,6 +36,33 @@ public class BeerControllerIT {
     BeerMapper beerMapper;
 
 
+    @Test
+    void testPatchByIdNotFound() {
+
+        assertThrows(NotFoundException.class, () -> {
+           beerController.patchBeerById(UUID.randomUUID(), BeerDTO.builder().build());
+        });
+    }
+
+    @Rollback
+    @Transactional
+    @Test
+    void testPatchById() {
+        Beer beer =beerRepository.findAll().get(0);
+        BeerDTO dto = beerMapper.beerToBeerDto(beer);
+
+        dto.setBeerName("Ali Baba Birasi");
+
+        ResponseEntity responseEntity = beerController.patchBeerById(beer.getId(), dto);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.valueOf(204));
+        Beer patchedBeer = beerRepository.findById(beer.getId()).get();
+
+
+        // Meaningless , we don't know which property is sent via JSON to  be modified
+        // There could be no beerName provided by the client whatsoever
+        assertThat(patchedBeer.getBeerName()).isEqualTo(beer.getBeerName());
+    }
 
     @Rollback
     @Transactional
