@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -80,11 +81,14 @@ class BeerControllerTest {
         BeerDTO beerDTO = BeerDTO.builder().build();
         given(beerService.saveNewBeer(any(BeerDTO.class))).willReturn(beerServiceImpl.listBeers().get(1));
 
-        mockMvc.perform(post(BEER_PATH)
+        MvcResult mvcResult = mockMvc.perform(post(BEER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(beerDTO)))
-                .andExpect(status().isBadRequest());            // 400 code
+                .andExpect(status().isBadRequest()).andReturn();            // 400 code
+
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     // Create beer test
