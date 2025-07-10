@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -72,7 +73,7 @@ public class BeerController {
     // CREATE A NEW BEER
     // Location header returned --
     @PostMapping(BEER_PATH)
-    public ResponseEntity handlePost(@RequestBody BeerDTO beer) {
+    public ResponseEntity handlePost(@Validated @RequestBody BeerDTO beer) {
 
         // Create the entity with Service implementations
         BeerDTO savedBeer = beerService.saveNewBeer(beer);
