@@ -19,9 +19,18 @@ public class BeerDTO {
     @NotBlank           // blank space still is a value
     @NotNull
     private String beerName;
+
+    // enum
+    @NotNull
     private BeerStyle beerStyle;
+
+    @NotBlank
+    @NotNull
     private String upc;
     private Integer quantityOnHand;
+
+
+    @NotNull
     private BigDecimal price;
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;

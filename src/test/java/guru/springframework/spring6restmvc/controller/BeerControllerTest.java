@@ -6,6 +6,7 @@ import guru.springframework.spring6restmvc.entities.Beer;
 import guru.springframework.spring6restmvc.model.BeerDTO;
 import guru.springframework.spring6restmvc.services.BeerService;
 import guru.springframework.spring6restmvc.services.BeerServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -35,6 +36,7 @@ import static org.hamcrest.core.Is.is;
 
 //@SpringBootTest
 // Only add needed parts not everything
+@Slf4j
 @WebMvcTest(BeerController.class)
 class BeerControllerTest {
 
@@ -70,11 +72,29 @@ class BeerControllerTest {
     ArgumentCaptor<BeerDTO> beerArgumentCaptor;
 
 
+    @Test
+    void testUpdateBeerNullBeerName() throws Exception {
+        BeerDTO beer = beerServiceImpl.listBeers().get(0);
+
+        // Setting the name to null to see validation error
+        beer.setBeerName("");
+
+        given(beerService.updateBeerById(any(), any())).willReturn(Optional.of(beer));
+
+        MvcResult mvcResult = mockMvc.perform(put(BEER_PATH_ID , beer.getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(beer)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.length()", is(1)))
+                        .andReturn();
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
+    }
 
 
-    // Tol test the validation
 
-
+    // To test create new beer functionality
     @Test
     void testCreateBeerNullBeerName() throws Exception {
 
@@ -86,7 +106,7 @@ class BeerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(beerDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.length()", is(2)))
+                .andExpect(jsonPath("$.length()", is(6)))
                 .andReturn();           // 400 code
 
 
