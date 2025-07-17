@@ -186,11 +186,8 @@ class BeerControllerTest {
         beerMap.put("beerName", "New Name");
 
 
-
         // ADD the fricking given statement
         given(beerService.patchBeerById(any(), any())).willReturn(Optional.of(BeerDTO.builder().build()));
-
-
 
 
         // Using URI variables for a cleaner refactoring. It does positional binding automatically

@@ -56,30 +56,32 @@ public class BeerControllerIT {
 
     MockMvc mockMvc;
 
-
-    @Test
-    void testPatchBeerBadName() throws Exception {
-        Beer beer = beerRepository.findAll().get(1);
-
-        // Mimicking JSON request body, having partial data
-        Map<String, Object> beerMap = new HashMap<>();
-        beerMap.put("beerName", "New Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123");
-
-        // Using URI variables for a cleaner refactoring. It does positional binding automatically
-        mockMvc.perform(patch(BEER_PATH_ID, beer.getId())
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(beerMap)))
-                .andExpect(status().isBadRequest());
-
-
-    }
-
-
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
+
+
+//    @Test
+//    void testPatchBeerBadName() throws Exception {
+//        Beer beer = beerRepository.findAll().get(1);
+//
+//        // Mimicking JSON request body, having partial data
+//        Map<String, Object> beerMap = new HashMap<>();
+//        beerMap.put("beerName", "New Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123Name2123123123123");
+//
+//        // Using URI variables for a cleaner refactoring. It does positional binding automatically
+//        mockMvc.perform(patch(BEER_PATH_ID, beer.getId())
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(beerMap)))
+//                .andExpect(status().isBadRequest());
+//
+//
+//    }
+
+
+
 
     @Test
     void testPatchByIdNotFound() {

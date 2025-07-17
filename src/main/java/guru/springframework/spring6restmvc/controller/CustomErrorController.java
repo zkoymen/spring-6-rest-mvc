@@ -32,9 +32,9 @@ public class CustomErrorController {
                         Map<String, String> errMap = new HashMap<>();
                         errMap.put(constraintViolation.getPropertyPath().toString(),
                                 constraintViolation.getMessage());
-                        return errMap;
-                    }).collect(Collectors.toList());
-            return responseEntity.body(errors);
+            return errMap;
+        }).collect(Collectors.toList());
+        return responseEntity.body(errors);
         }
 
 
