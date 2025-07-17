@@ -33,6 +33,11 @@ public class Customer {
     private String customerName;
 
 
+    // newly added column now create a migration version
+    @Column(length = 255)
+    private String email;
+
+
     @Version
     private Integer version;
 
