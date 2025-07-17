@@ -13,6 +13,10 @@ import java.util.UUID;
 @Builder
 @Data
 public class BeerDTO {
+
+    // DTOs are used to transfer data between processes
+    // carry data without necessarily enforcing strict validation rules
+
     private UUID id;
     private Integer version;
 

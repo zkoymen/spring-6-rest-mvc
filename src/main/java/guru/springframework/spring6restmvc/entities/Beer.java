@@ -20,7 +20,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Beer {
-    // About db entities
+
+
+    // Entities are directly mapped to your database tables and are responsible for persisting data
 
     @Id
     @GeneratedValue(generator = "UUID")
