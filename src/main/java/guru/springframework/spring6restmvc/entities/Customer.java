@@ -31,6 +31,8 @@ public class Customer {
 
 
     private String customerName;
+
+
     @Version
     private Integer version;
 
