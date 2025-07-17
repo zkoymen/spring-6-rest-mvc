@@ -4,7 +4,6 @@ import guru.springframework.spring6restmvc.entities.Customer;
 import guru.springframework.spring6restmvc.mappers.CustomerMapper;
 import guru.springframework.spring6restmvc.model.CustomerDTO;
 import guru.springframework.spring6restmvc.repositories.CustomerRepository;
-import guru.springframework.spring6restmvc.services.CustomerService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,7 +161,7 @@ class CustomerControllerIT {
     }
 
     @Test
-    void testGetBeerById() {
+    void testGetCustomerById() {
         Customer customer = customerRepository.findAll().get(0);
         CustomerDTO customerDTO = customerController.getCustomerById(customer.getId());
 

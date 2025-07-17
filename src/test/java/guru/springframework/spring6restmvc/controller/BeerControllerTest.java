@@ -72,6 +72,9 @@ class BeerControllerTest {
     ArgumentCaptor<BeerDTO> beerArgumentCaptor;
 
 
+
+
+
     @Test
     void testUpdateBeerNullBeerName() throws Exception {
         BeerDTO beer = beerServiceImpl.listBeers().get(0);
@@ -155,6 +158,10 @@ class BeerControllerTest {
 
         BeerDTO beer = beerServiceImpl.listBeers().get(0);
 
+
+        // optional part
+        given(beerService.deleteBeerById(any())).willReturn(true);
+
         mockMvc.perform(delete(BEER_PATH_ID ,beer.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
@@ -172,11 +179,19 @@ class BeerControllerTest {
     // Test patch Beer
     @Test
     void testPatchBeer() throws Exception {
-        BeerDTO beer = beerServiceImpl.listBeers().get(1);
+        BeerDTO beer = beerServiceImpl.listBeers().get(0);
 
         // Mimicking JSON request body, having partial data
         Map<String, Object> beerMap = new HashMap<>();
         beerMap.put("beerName", "New Name");
+
+
+
+        // ADD the fricking given statement
+        given(beerService.patchBeerById(any(), any())).willReturn(Optional.of(BeerDTO.builder().build()));
+
+
+
 
         // Using URI variables for a cleaner refactoring. It does positional binding automatically
         mockMvc.perform(patch(BEER_PATH_ID, beer.getId())
