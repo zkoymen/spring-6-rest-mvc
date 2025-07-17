@@ -23,7 +23,7 @@ class BeerRepositoryTest {
     @Test
     void testSaveBeerNameTooLong() {
 
-
+        // Check before it is sent to database
         assertThrows(ConstraintViolationException.class, () -> {
             // exceed 50 char constraint
             Beer testBeer = beerRepository.save(Beer.builder()
