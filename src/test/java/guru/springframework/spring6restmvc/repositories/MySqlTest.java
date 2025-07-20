@@ -26,6 +26,9 @@ public class MySqlTest {
 
     static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0");
 
+
+    // we don't want the initial the password and username
+    // test containers will have different username and password and obv --- random ports being used
     @DynamicPropertySource
     static void mySqlProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.username", mySQLContainer::getUsername);
