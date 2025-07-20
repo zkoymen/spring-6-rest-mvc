@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+// test the JPA persistence layer of your application in isolation
+// Spring Data JPA repositories and entity mappings
 @DataJpaTest
 class BeerRepositoryTest {
 

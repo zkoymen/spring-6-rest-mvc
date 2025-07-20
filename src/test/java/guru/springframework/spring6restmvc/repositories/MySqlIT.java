@@ -12,15 +12,17 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
-import javax.xml.crypto.Data;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
+// With theServiceConnection
+// Now an IT test
 @Testcontainers
 @SpringBootTest
 @ActiveProfiles("localmysql")
-public class MySqlTestEasyWay {
+public class MySqlIT {
 
 
     @Container
